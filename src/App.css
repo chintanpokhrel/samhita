@@ -1,0 +1,254 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 12px;
+  gap: 12px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--accent);
+}
+
+.mantra-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mantra-selector button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #3a2c20;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.mantra-selector button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.mantra-selector select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #3a2c20;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.95rem;
+}
+.app-header .subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stage-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid #3a2c20;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.panel-header {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-bottom: 1px solid #3a2c20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-stage,
+.camera-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.camera-stage video,
+.camera-stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mirror {
+  transform: scaleX(-1);
+}
+.overlay {
+  pointer-events: none;
+}
+.feedback {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+.feedback-good {
+  background: rgba(64, 120, 40, 0.78);
+  color: #eaffd6;
+}
+.feedback-bad {
+  background: rgba(120, 70, 30, 0.78);
+  color: #ffe6c2;
+}
+.feedback .detected {
+  opacity: 0.8;
+  font-size: 0.85em;
+}
+
+.camera-status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--muted);
+  text-align: center;
+  padding: 1rem;
+}
+
+.recite-panel {
+  padding-bottom: 4px;
+}
+.syllables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 12px;
+  font-size: 2rem;
+}
+.syllable {
+  padding: 2px 8px;
+  border-radius: 6px;
+  border-bottom: 3px solid transparent;
+  transition: background 0.1s, transform 0.1s;
+  cursor: pointer;
+  user-select: none;
+}
+.syllable:hover {
+  background: rgba(255, 204, 85, 0.1);
+}
+.syllable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.syllable.active {
+  background: rgba(255, 204, 85, 0.18);
+  transform: translateY(-3px);
+}
+/* svara color coding */
+.svara-udatta { border-bottom-color: #ff7a59; }
+.svara-anudatta { border-bottom-color: #5b9bd5; }
+.svara-svarita { border-bottom-color: #8fd14f; }
+.svara-dirgha-svarita { border-bottom-color: #b06fd1; }
+.svara-pracaya { border-bottom-color: #6b5d49; }
+
+.recite-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 8px 12px 12px;
+}
+.recite-controls button {
+  background: var(--accent);
+  color: #1a1410;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.speed-control,
+.pose-tester {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.pose-tester .muted {
+  font-size: 0.8rem;
+}
+.speed-btn {
+  background: #2e231a;
+  color: var(--muted);
+  border: 1px solid #3a2c20;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.speed-btn.active {
+  background: var(--accent);
+  color: #1a1410;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.gesture-readout {
+  font-size: 0.95rem;
+  flex: 1 1 100%;
+  min-height: 2.6em; /* fixed so per-syllable text changes don't reflow the layout */
+}
+.muted {
+  color: var(--muted);
+}
+.error-boundary {
+  padding: 16px;
+  color: #ffb3b3;
+  background: #2a1414;
+  border: 1px solid #5a2a2a;
+  border-radius: 10px;
+  overflow: auto;
+}
+.error-boundary pre {
+  white-space: pre-wrap;
+  font-size: 0.8rem;
+}
+
+.badge-unvalidated,
+.badge-checked,
+.badge-ok {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-unvalidated {
+  background: #5a2a2a;
+  color: #ffb3b3;
+}
+.badge-checked {
+  background: #5a4a20;
+  color: #ffe6a3;
+}
+.badge-ok {
+  background: #2a5a2a;
+  color: #b3ffb3;
+}

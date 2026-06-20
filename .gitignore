@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+*.tsbuildinfo
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Large avatar / model assets that aren't checked in yet
+public/avatar.vrm
+
+# MediaPipe assets — copied from node_modules + downloaded (see README / setup script)
+public/mediapipe
+
+# Tauri (added later, once Rust is installed)
+src-tauri/target
+.pdfwork
+public/audio

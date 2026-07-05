@@ -9,6 +9,9 @@ student's hands.
 
 ## Status
 
+**See [PROGRESS.md](./PROGRESS.md)** for the full status, the validated gesture
+convention, an architecture map, and the roadmap.
+
 Working web core (also runs as a Tauri desktop app). It includes:
 
 - **Real text** — Mādhyandina Saṃhitā adhyāya 1 (accented Devanāgarī from a

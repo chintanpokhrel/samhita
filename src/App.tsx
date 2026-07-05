@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import { AvatarScene } from "./components/AvatarScene";
 import { CameraPanel } from "./components/CameraPanel";
@@ -8,9 +9,12 @@ import { AudioPlayer } from "./components/AudioPlayer";
 import { SAMPLE_LESSON } from "./content/sample";
 import { usePlaybackClock } from "./state/playback";
 
+type Mode = "along" | "watch";
+
 export default function App() {
   // Drive the recitation clock; the selector loads the chosen mantra.
   usePlaybackClock();
+  const [mode, setMode] = useState<Mode>("along");
 
   return (
     <div className="app">
@@ -21,16 +25,28 @@ export default function App() {
             Mādhyandina Saṃhitā recitation teacher · {SAMPLE_LESSON.title}
           </div>
         </div>
-        <MantraSelector lesson={SAMPLE_LESSON} />
+        <div className="header-controls">
+          <div className="mode-toggle" role="group" aria-label="Mode">
+            <button className={mode === "along" ? "active" : ""} onClick={() => setMode("along")}>
+              Recite-along
+            </button>
+            <button className={mode === "watch" ? "active" : ""} onClick={() => setMode("watch")}>
+              Avatar only
+            </button>
+          </div>
+          <MantraSelector lesson={SAMPLE_LESSON} />
+        </div>
       </header>
 
-      <main className="stage-grid">
+      <main className={`stage-grid ${mode === "watch" ? "watch" : ""}`}>
         <ErrorBoundary label="Avatar scene">
           <AvatarScene />
         </ErrorBoundary>
-        <ErrorBoundary label="Camera">
-          <CameraPanel />
-        </ErrorBoundary>
+        {mode === "along" && (
+          <ErrorBoundary label="Camera">
+            <CameraPanel />
+          </ErrorBoundary>
+        )}
       </main>
 
       <footer className="app-footer">

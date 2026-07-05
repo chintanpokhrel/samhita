@@ -1,20 +1,20 @@
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import {
   VRM,
   VRMLoaderPlugin,
   VRMUtils,
-  type VRMHumanoid,
   type VRMHumanBoneName,
+  type VRMHumanoid,
 } from "@pixiv/three-vrm";
-import { MathUtils } from "three";
+import { OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Suspense, useEffect, useRef, useState } from "react";
 import type { Group } from "three";
-import { ErrorBoundary } from "./ErrorBoundary";
-import { usePlayback } from "../state/playback";
+import { MathUtils } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import type { ArmPosition } from "../content/gestures";
 import type { FingerShape } from "../content/schema";
+import { usePlayback } from "../state/playback";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 const AVATAR_URL = "/avatar.vrm";
 
@@ -140,11 +140,12 @@ function applySeatedPose(hu: VRMHumanoid) {
     const n = hu.getNormalizedBoneNode(b);
     if (n) n.rotation.set(x, y, z);
   };
-  // Hips flex + knees fold + thighs splayed out (sukhāsana approximation).
-  set("leftUpperLeg", -1.5, 0.3, 0.6);
-  set("rightUpperLeg", -1.5, -0.3, -0.6);
-  set("leftLowerLeg", 2.2, 0, 0);
-  set("rightLowerLeg", 2.2, 0, 0);
+  // Sukhāsana: hips flexed + abducted + externally rotated; knees folded with the
+  // shins angled inward (lowerLeg.y) so they CROSS in front rather than meeting.
+  set("leftUpperLeg", -1.3, 0.45, 0.5);
+  set("rightUpperLeg", -1.3, -0.45, -0.5);
+  set("leftLowerLeg", 2.65, 0.6, 0);
+  set("rightLowerLeg", 2.65, -0.6, 0);
   set("spine", 0.05, 0, 0);
   // Left arm rests down by the lap (mirror of the right: NEGATIVE z lowers it).
   set("leftUpperArm", 0.15, 0, -1.4);
@@ -168,8 +169,11 @@ function VrmAvatar({ url }: { url: string }) {
     if (!vrm) return;
     VRMUtils.removeUnnecessaryVertices(vrm.scene);
     VRMUtils.combineSkeletons(vrm.scene);
-    vrm.scene.rotation.y = 0; // this model already faces the camera at rest
-    vrm.scene.position.y = -0.3; // raise so the whole seated body is visible
+    // Normalize VRM 0.x to the VRM 1.0 orientation so any model we drop in faces
+    // the same way (then rotation.y = 0 faces the camera).
+    VRMUtils.rotateVRM0(vrm);
+    vrm.scene.rotation.y = 0;
+    vrm.scene.position.y = -0.45; // drop a little so the head has headroom
     applySeatedPose(vrm.humanoid);
     vrm.humanoid.update();
   }, [vrm]);
@@ -339,12 +343,12 @@ export function AvatarScene() {
     <div className="panel avatar-panel">
       <div className="panel-header">Teacher (ācārya)</div>
       <div className="avatar-stage">
-        <Canvas camera={{ position: [0, 0.75, 2.75], fov: 38 }}>
+        <Canvas camera={{ position: [0, 0.7, 2.6], fov: 37 }}>
           <ambientLight intensity={0.7} />
           <directionalLight position={[2, 4, 3]} intensity={1.1} />
           <Avatar />
           <OrbitControls
-            target={[0, 0.5, 0]}
+            target={[0, 0.75, 0]}
             enablePan={false}
             minDistance={1.2}
             maxDistance={4}

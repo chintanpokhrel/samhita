@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { usePlayback, referenceStep } from "../state/playback";
 import { ARM_POSITIONS, type ArmPosition } from "../content/gestures";
 import type { FingerShape } from "../content/schema";
@@ -27,6 +28,12 @@ export function RecitePanel() {
   const setPreview = usePlayback((s) => s.setPreview);
   const setPreviewMudra = usePlayback((s) => s.setPreviewMudra);
 
+  // Keep the active syllable scrolled into view within the capped strip.
+  const activeRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [activeIndex]);
+
   if (!mantra) return null;
 
   const step = activeIndex >= 0 ? referenceStep() : null;
@@ -48,6 +55,7 @@ export function RecitePanel() {
         {mantra.syllables.map((s, i) => (
           <span
             key={i}
+            ref={i === activeIndex ? activeRef : undefined}
             role="button"
             tabIndex={0}
             onClick={() => playFrom(s.startMs ?? 0)}

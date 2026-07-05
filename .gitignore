@@ -10,8 +10,8 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 
-# Large avatar / model assets that aren't checked in yet
-public/avatar.vrm
+# Large avatar / model assets that aren't checked in (user-provided)
+public/*.vrm
 
 # MediaPipe assets — copied from node_modules + downloaded (see README / setup script)
 public/mediapipe

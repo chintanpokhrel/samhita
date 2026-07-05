@@ -12,8 +12,8 @@ export const ADHYAYA_1_AUDIO_URL = "/audio/adhyaya1.m4a";
 export const INVOCATION_SEGMENT: [number, number] = [0, 3];
 
 export const ADHYAYA_1_SEGMENTS: Record<string, [number, number]> = {
-  "1": [3, 41],
-  "2": [41, 64],
+  "1": [3, 42],
+  "2": [42, 64],
   "3": [64, 86],
   "4": [86, 103],
   "5": [103, 117],
